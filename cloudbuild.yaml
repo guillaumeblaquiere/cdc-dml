@@ -1,0 +1,33 @@
+# Create a container and binaries for windows, linux and macos
+steps:
+- name: 'gcr.io/cloud-builders/go:debian-1.21'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - |
+    #!/bin/bash
+    set -e
+    export GOARCH=amd64
+    GOOS=linux go build -o cdc-dml-linux .
+    GOOS=windows go build -o cdc-dml-windows.exe -ldflags="-H windowsgui" .
+    GOOS=darwin GOARCH=arm64 go build -o cdc-dml-darwin .
+# Use gcloud step to copy binaries to cloud storage
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      #!/bin/bash
+      set -e
+      gcloud storage cp cdc-dml-linux gs://pubsub-cdc-bq-dml/cdc-dml-linux
+      gcloud storage cp cdc-dml-windows.exe gs://pubsub-cdc-bq-dml/cdc-dml-windows.exe
+      gcloud storage cp cdc-dml-darwin gs://pubsub-cdc-bq-dml/cdc-dml-darwin
+- name: 'gcr.io/cloud-builders/docker'
+  args:
+    - 'build'
+    - '-t'
+    - 'us-central1-docker.pkg.dev/gblaquiere-dev/public/pubsub-cdc-bq-dml'
+    - '.'
+images:
+- 'us-central1-docker.pkg.dev/gblaquiere-dev/public/pubsub-cdc-bq-dml'
