@@ -9,7 +9,7 @@ for application to BigQuery
 
 This application addresses the challenge of applying DML operations to BigQuery based on real-time changes captured via
 Pub/Sub.  While Pub/Sub CDC streaming to BigQuery create limitation in DML usage, it's impossible to use DML operations 
-in BigQuery with SQL jobs. This application bridges that gap. More detail in [this article]()
+in BigQuery with SQL jobs. This application bridges that gap. More detail in [this article](https://medium.com/google-cloud/bigquery-cdc-with-pubsub-overcoming-limitations-ceae431acfec)
 
 When a row needs to be updated or deleted in BigQuery, a message is published to a designated Pub/Sub topic.  This 
 message contains information identifying the row (e.g., primary key values) and the changes to apply. The application 
@@ -87,8 +87,7 @@ Choose between "UPSERT" or "DELETE" operation.
 * [Windows (AMD64)](https://storage.googleapis.com/pubsub-cdc-bq-dml/cdc-dml-windows.exe) - `https://storage.googleapis.com/pubsub-cdc-bq-dml/cdc-dml-windows.exe`
 * [MacOS (Darwin ARM64)](https://storage.googleapis.com/pubsub-cdc-bq-dml/cdc-dml-darwin) - `https://storage.googleapis.com/pubsub-cdc-bq-dml/cdc-dml-darwin`
 
-You can get binaries for multiple OS and architectures
-   from `gs://pubsub-cdc-bq-dml` in Cloud Storage. For example for a linux architecture you could run
+You can get binaries for multiple OS and architectures in Cloud Storage. For example for a linux architecture you could run
 ```bash
 wget https://storage.googleapis.com/pubsub-cdc-bq-dml/cdc-dml-linux && chmod +x cdc-dml-linux
 ```
